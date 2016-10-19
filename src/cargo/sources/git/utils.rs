@@ -112,9 +112,9 @@ impl GitRemote {
     pub fn checkout(&self, into: &Path, cargo_config: &Config) -> CargoResult<GitDatabase> {
         let repo = match git2::Repository::open(into) {
             Ok(repo) => {
-                try!(self.fetch_into(&repo, &cargo_config).chain_error(|| {
+                let _ = self.fetch_into(&repo, &cargo_config).chain_error(|| {
                     human(format!("failed to fetch into {}", into.display()))
-                }));
+                });
                 repo
             }
             Err(..) => {

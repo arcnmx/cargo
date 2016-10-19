@@ -99,9 +99,9 @@ impl<'cfg> RegistryData for RemoteRegistry<'cfg> {
         let url = self.source_id.url().to_string();
         let refspec = "refs/heads/*:refs/remotes/origin/*";
 
-        try!(git::fetch(&repo, &url, refspec, &self.config).chain_error(|| {
+        let _ = git::fetch(&repo, &url, refspec, &self.config).chain_error(|| {
             human(format!("failed to fetch `{}`", url))
-        }));
+        });
 
         // git reset --hard origin/master
         let reference = "refs/remotes/origin/master";
